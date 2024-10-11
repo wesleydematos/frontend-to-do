@@ -48,9 +48,17 @@ module.exports = {
       },
       backgroundImage: {
         home: "url('/src/assets/homebackground.jpg')",
-        dashboard: "url('/src/assets/dashboard.jpg')",
+        dashboard: "url('/src/assets/dashboard.png')",
+      },
+      filter: {
+        invert: "invert(1)",
+        sepia: "sepia(1)",
+        saturate: "saturate(5)",
+        "hue-rotate-green": "hue-rotate(130deg)",
+        "custom-filter":
+          "invert(0.55) sepia(1) saturate(10) hue-rotate(130deg)",
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

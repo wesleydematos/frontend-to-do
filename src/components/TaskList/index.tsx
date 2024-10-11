@@ -1,8 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { FiTrash } from "react-icons/fi";
 import { FaPencilAlt } from "react-icons/fa";
 
 import { ContextModal } from "../../contexts/modalContext";
+import { TaskContext } from "../../contexts/taskContext";
 
 interface ITask {
   id: number;
@@ -20,33 +21,15 @@ interface ITaskListProps {
       completed?: boolean;
     }
   ) => void;
-  deleteTask: (id: number) => void;
 }
 
-export function TaskList({
-  tasks,
-  markAsCompleted,
-  deleteTask,
-}: ITaskListProps) {
-  const [taskToDelete, setTaskToDelete] = useState<ITask | null>(null);
-  const { isOpenDeleteTask, onOpenDeleteTask } = useContext(ContextModal);
+export function TaskList({ tasks, markAsCompleted }: ITaskListProps) {
+  const { onOpenDeleteTask } = useContext(ContextModal);
+  const { setTaskId } = useContext(TaskContext);
 
   const openDeleteModal = (task: ITask) => {
-    setTaskToDelete(task);
+    setTaskId(task.id);
     onOpenDeleteTask();
-  };
-
-  const closeDeleteModal = () => {
-    setTaskToDelete(null);
-    onOpenDeleteTask();
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const confirmDeleteTask = () => {
-    if (taskToDelete) {
-      deleteTask(taskToDelete.id);
-      closeDeleteModal();
-    }
   };
 
   return (
@@ -88,19 +71,6 @@ export function TaskList({
             </div>
           </div>
         ))
-      )}
-
-      {isOpenDeleteTask && (
-        <></>
-        // <ModalContainer
-        //   action={confirmDeleteTask}
-        //   actionName="Deletar"
-        //   closeModal={closeDeleteModal}
-        //   title="Deletar tarefa"
-        //   type="danger"
-        // >
-        //   <p>Tem certeza que deseja deletar esta tarefa?</p>
-        // </ModalContainer>
       )}
     </div>
   );

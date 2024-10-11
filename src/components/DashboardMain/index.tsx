@@ -1,9 +1,10 @@
+import { useContext, useEffect } from "react";
 import { motion } from "framer-motion";
+
+import { TaskContext } from "../../contexts/taskContext";
 
 import { ButtonDefault } from "../Button";
 import { TaskList } from "../TaskList";
-import { useContext, useEffect } from "react";
-import { TaskContext } from "../../contexts/taskContext";
 import { Loading } from "../Loading";
 
 export const DashboardMain = () => {
@@ -12,7 +13,6 @@ export const DashboardMain = () => {
     isLoading,
     completedTasks,
     UpdateTask,
-    deleteTask,
     setIsLoading,
     GetTasks,
   } = useContext(TaskContext);
@@ -47,17 +47,9 @@ export const DashboardMain = () => {
             transition={{ duration: 0.6 }}
           >
             <p className="text-white">SUAS TAREFAS</p>
-            <TaskList
-              tasks={tasks}
-              markAsCompleted={UpdateTask}
-              deleteTask={deleteTask}
-            />
+            <TaskList tasks={tasks} markAsCompleted={UpdateTask} />
             <p className="text-white">TAREFAS FINALIZADAS</p>
-            <TaskList
-              tasks={completedTasks}
-              markAsCompleted={UpdateTask}
-              deleteTask={deleteTask}
-            />
+            <TaskList tasks={completedTasks} markAsCompleted={UpdateTask} />
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}

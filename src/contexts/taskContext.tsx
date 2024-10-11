@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
+
 import { CustomToast } from "../components/Toast";
 import { Api } from "../services/Api";
 
@@ -11,8 +11,9 @@ interface ITaskContext {
   isLoading: boolean;
   tasks: ITask[];
   completedTasks: ITask[];
-  deleteTask: (taskId: number) => void;
+  DeleteTask: () => void;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setTaskId: React.Dispatch<React.SetStateAction<null | number>>;
   GetTasks: (completed: boolean) => Promise<unknown>;
   UpdateTask: (
     id: number,
@@ -36,6 +37,7 @@ export const TaskProvider = ({ children }: ITaskContextProps) => {
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [completedTasks, setCompletedTasks] = useState<ITask[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [taskId, setTaskId] = useState<null | number>(null);
 
   const { toastify } = CustomToast();
 
@@ -101,8 +103,34 @@ export const TaskProvider = ({ children }: ITaskContextProps) => {
     }
   };
 
-  const deleteTask = (taskId: number) => {
-    alert(`deleted task ${taskId}`);
+  const DeleteTask = async () => {
+    setIsLoading(true);
+
+    try {
+      const token = localStorage.getItem("@TODO:TOKEN");
+
+      await Api.delete(`tasks/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      toastify({
+        description: "Tarefa deletada com sucesso!",
+        status: "success",
+      });
+
+      await Promise.all([GetTasks(false), GetTasks(true)]);
+    } catch (error) {
+      toastify({
+        description: "Ops, algo deu errado ao deletar a tarefa!",
+        status: "error",
+      });
+
+      return error;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -111,10 +139,11 @@ export const TaskProvider = ({ children }: ITaskContextProps) => {
         isLoading,
         tasks,
         completedTasks,
-        deleteTask,
+        DeleteTask,
         GetTasks,
         setIsLoading,
         UpdateTask,
+        setTaskId,
       }}
     >
       {children}

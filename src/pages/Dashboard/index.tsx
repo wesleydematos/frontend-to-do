@@ -4,6 +4,7 @@ import { MdLogout } from "react-icons/md";
 import { UserContext } from "../../contexts/userContext";
 import { useProtectedRoutes } from "../../hooks/useProtectedRoutes";
 import { DashboardMain } from "../../components/DashboardMain";
+import { ModalDeleteTask } from "../../components/Modals/ModalDeleteTask";
 
 export const Dashboard = () => {
   const { isLogged, Logout } = useContext(UserContext);
@@ -26,6 +27,7 @@ export const Dashboard = () => {
       >
         <MdLogout size={24} />
       </button>
+      <ModalDeleteTask />
     </div>
   );
 };

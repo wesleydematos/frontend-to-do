@@ -9,15 +9,18 @@ interface IModalContextProps {
 interface IModalContext {
   isOpenRegister: boolean;
   isOpenLogin: boolean;
-  isOpenDeleteTask: boolean;
+  isOpenCreateTask: boolean;
   isOpenEditTask: boolean;
+  isOpenDeleteTask: boolean;
   onOpenRegister: () => void;
   onCloseRegister: () => void;
   onOpenLogin: () => void;
   onCloseLogin: () => void;
+  onOpenCreateTask: () => void;
   onOpenEditTask: () => void;
-  onCloseEditTask: () => void;
   onOpenDeleteTask: () => void;
+  onCloseCreateTask: () => void;
+  onCloseEditTask: () => void;
   onCloseDeleteTask: () => void;
 }
 
@@ -44,6 +47,12 @@ export const ModalProvider = ({ children }: IModalContextProps) => {
   } = useDisclosure();
 
   const {
+    isOpen: isOpenCreateTask,
+    onOpen: onOpenCreateTask,
+    onClose: onCloseCreateTask,
+  } = useDisclosure();
+
+  const {
     isOpen: isOpenEditTask,
     onOpen: onOpenEditTask,
     onClose: onCloseEditTask,
@@ -60,14 +69,17 @@ export const ModalProvider = ({ children }: IModalContextProps) => {
       value={{
         isOpenLogin,
         isOpenRegister,
+        isOpenCreateTask,
         isOpenEditTask,
         isOpenDeleteTask,
         onOpenLogin,
         onOpenRegister,
+        onOpenCreateTask,
         onOpenEditTask,
         onOpenDeleteTask,
         onCloseLogin,
         onCloseRegister,
+        onCloseCreateTask,
         onCloseEditTask,
         onCloseDeleteTask,
       }}

@@ -9,6 +9,7 @@ interface ITaskContextProps {
 
 interface ITaskContext {
   isLoading: boolean;
+  taskId: number | null;
   tasks: ITask[];
   completedTasks: ITask[];
   DeleteTask: () => void;
@@ -22,6 +23,7 @@ interface ITaskContext {
       completed?: boolean;
     }
   ) => Promise<unknown>;
+  CreateTask: (taskData: ICreateTask) => Promise<unknown>;
 }
 
 interface ITask {
@@ -29,6 +31,10 @@ interface ITask {
   title: string;
   completed: boolean;
   userId: number;
+}
+
+interface ICreateTask {
+  title: string;
 }
 
 export const TaskContext = createContext<ITaskContext>({} as ITaskContext);
@@ -40,6 +46,36 @@ export const TaskProvider = ({ children }: ITaskContextProps) => {
   const [taskId, setTaskId] = useState<null | number>(null);
 
   const { toastify } = CustomToast();
+
+  const CreateTask = async (taskData: ICreateTask) => {
+    setIsLoading(true);
+
+    try {
+      const token = localStorage.getItem("@TODO:TOKEN");
+
+      await Api.post("tasks/create", taskData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      toastify({
+        description: "Tarefa criada com sucesso!",
+        status: "success",
+      });
+
+      await Promise.all([GetTasks(false), GetTasks(true)]);
+    } catch (error) {
+      toastify({
+        description: "Ops, algo deu errado ao criar a tarefa!",
+        status: "error",
+      });
+
+      return error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const GetTasks = async (completed: boolean) => {
     setIsLoading(true);
@@ -138,7 +174,9 @@ export const TaskProvider = ({ children }: ITaskContextProps) => {
       value={{
         isLoading,
         tasks,
+        taskId,
         completedTasks,
+        CreateTask,
         DeleteTask,
         GetTasks,
         setIsLoading,

@@ -24,12 +24,17 @@ interface ITaskListProps {
 }
 
 export function TaskList({ tasks, markAsCompleted }: ITaskListProps) {
-  const { onOpenDeleteTask } = useContext(ContextModal);
+  const { onOpenDeleteTask, onOpenEditTask } = useContext(ContextModal);
   const { setTaskId } = useContext(TaskContext);
 
   const openDeleteModal = (task: ITask) => {
     setTaskId(task.id);
     onOpenDeleteTask();
+  };
+
+  const openEditModal = (task: ITask) => {
+    setTaskId(task.id);
+    onOpenEditTask();
   };
 
   return (
@@ -65,7 +70,7 @@ export function TaskList({ tasks, markAsCompleted }: ITaskListProps) {
               <button onClick={() => openDeleteModal(task)}>
                 <FiTrash size={24} color="#d7dde9" />
               </button>
-              <button onClick={() => openDeleteModal(task)}>
+              <button onClick={() => openEditModal(task)}>
                 <FaPencilAlt size={24} color="#d7dde9" />
               </button>
             </div>

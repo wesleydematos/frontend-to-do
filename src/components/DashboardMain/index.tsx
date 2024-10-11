@@ -6,6 +6,7 @@ import { TaskContext } from "../../contexts/taskContext";
 import { ButtonDefault } from "../Button";
 import { TaskList } from "../TaskList";
 import { Loading } from "../Loading";
+import { ContextModal } from "../../contexts/modalContext";
 
 export const DashboardMain = () => {
   const {
@@ -16,6 +17,7 @@ export const DashboardMain = () => {
     setIsLoading,
     GetTasks,
   } = useContext(TaskContext);
+  const { onOpenCreateTask } = useContext(ContextModal);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -59,7 +61,7 @@ export const DashboardMain = () => {
           >
             <ButtonDefault
               text="Adicionar nova tarefa"
-              onClick={() => {}}
+              onClick={() => onOpenCreateTask()}
               height="50"
               className="w-[100%] tablet:w-[300px]"
             />

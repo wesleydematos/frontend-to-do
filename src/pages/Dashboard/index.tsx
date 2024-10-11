@@ -5,6 +5,8 @@ import { UserContext } from "../../contexts/userContext";
 import { useProtectedRoutes } from "../../hooks/useProtectedRoutes";
 import { DashboardMain } from "../../components/DashboardMain";
 import { ModalDeleteTask } from "../../components/Modals/ModalDeleteTask";
+import { ModalCreateTask } from "../../components/Modals/ModalCreateTask";
+import { ModalEditTask } from "../../components/Modals/ModalEditTask";
 
 export const Dashboard = () => {
   const { isLogged, Logout } = useContext(UserContext);
@@ -27,6 +29,9 @@ export const Dashboard = () => {
       >
         <MdLogout size={24} />
       </button>
+
+      <ModalCreateTask />
+      <ModalEditTask />
       <ModalDeleteTask />
     </div>
   );

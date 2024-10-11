@@ -30,7 +30,8 @@ interface IUserDataLogin {
 }
 
 interface IUserApiLoginResp {
-  accessToken: string;
+  access_token: string;
+  userId: string;
 }
 
 export const UserContext = createContext<IUserContext>({} as IUserContext);
@@ -72,7 +73,8 @@ export const UserProvider = ({ children }: IUserContextProps) => {
       setIsLoading(true);
       const res = await Api.post<IUserApiLoginResp>("auth/login", data);
       localStorage.clear();
-      localStorage.setItem("@TODO:TOKEN", res.data.accessToken);
+      localStorage.setItem("@TODO:TOKEN", res.data.access_token);
+      localStorage.setItem("@TODO:USERID", res.data.userId);
       setIsLogged(true);
 
       navigate("/dashboard");
@@ -94,6 +96,7 @@ export const UserProvider = ({ children }: IUserContextProps) => {
   const Logout = () => {
     setIsLogged(false);
     localStorage.removeItem("@TODO:TOKEN");
+    localStorage.removeItem("@TODO:USERID");
     navigate("/");
   };
 

@@ -47,7 +47,7 @@ export const UserProvider = ({ children }: IUserContextProps) => {
 
   const Register = async (data: IUserDataRegister) => {
     try {
-      await Api.post("register", {
+      await Api.post("users/signup", {
         email: data.email,
         password: data.password,
       });
@@ -70,7 +70,7 @@ export const UserProvider = ({ children }: IUserContextProps) => {
   const Login = async (data: IUserDataLogin) => {
     try {
       setIsLoading(true);
-      const res = await Api.post<IUserApiLoginResp>("login", data);
+      const res = await Api.post<IUserApiLoginResp>("auth/login", data);
       localStorage.clear();
       localStorage.setItem("@TODO:TOKEN", res.data.accessToken);
       setIsLogged(true);

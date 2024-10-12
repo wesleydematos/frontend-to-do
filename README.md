@@ -1,4 +1,4 @@
-# Aplicação React + Chakra UI
+# Aplicação React + Chakra UI + Tailwind
 
 Este é um projeto simples utilizando React e Chakra UI para criar uma interface de usuário para gerenciamento de tarefas.
 
